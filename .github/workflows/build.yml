@@ -41,7 +41,7 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
           mongodb-username: supercharge
           mongodb-password: secret
-          mongodb-db: schedule
+          mongodb-db: schedules
       - name: Start Redis v${{ matrix.redis-version }}
         uses: superchargejs/redis-github-action@1.1.0
         with:
