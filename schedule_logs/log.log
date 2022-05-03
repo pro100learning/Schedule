@@ -70,3 +70,21 @@
 [INFO ] 2022-05-03 14:12:08.482 [Test worker] c.s.r.i.BasicRepositoryImpl - In findById(id = [14])
 [INFO ] 2022-05-03 14:12:08.505 [Test worker] c.s.s.i.LessonServiceImpl - In getById(id = [15])
 [INFO ] 2022-05-03 14:12:08.506 [Test worker] c.s.r.i.BasicRepositoryImpl - In findById(id = [15])
+[INFO ] 2022-05-03 14:19:45.570 [Test worker] c.s.s.i.TeacherServiceImpl - Enter into getById of TeacherServiceImpl with id 4
+[INFO ] 2022-05-03 14:19:45.571 [Test worker] c.s.r.i.BasicRepositoryImpl - In findById(id = [4])
+[INFO ] 2022-05-03 14:19:45.636 [Test worker] c.s.s.i.SubjectServiceImpl - In getById(id = [5])
+[INFO ] 2022-05-03 14:19:45.636 [Test worker] c.s.r.i.BasicRepositoryImpl - In findById(id = [5])
+[INFO ] 2022-05-03 14:19:45.643 [Test worker] c.s.s.i.GroupServiceImpl - In getById(id = [4])
+[INFO ] 2022-05-03 14:19:45.643 [Test worker] c.s.r.i.BasicRepositoryImpl - In findById(id = [4])
+[INFO ] 2022-05-03 14:19:45.853 [Test worker] c.s.c.LessonController - In update (lessonInfoDTO = [LessonInfoDTO(group=GroupDTO(id=4, disable=false, title=111), grouped=true)])
+[INFO ] 2022-05-03 14:19:45.904 [Test worker] c.s.r.i.SemesterRepositoryImpl - In getCurrentSemester method
+[INFO ] 2022-05-03 14:19:45.970 [Test worker] c.s.s.i.LessonServiceImpl - In update(entity = [Lesson(id=13, hours=1, linkToMeeting=, subjectForSite=History, lessonType=LECTURE, teacher=Teacher(id=4, name=Ivan, surname=Ivanov, patronymic=Ivanovych, position=null, userId=null, department=null, disable=false), subject=com.softserve.entity.Subject@99c8155d, group=Group(id=4, title=111, disable=false, sortingOrder=null), semester=com.softserve.entity.Semester@202e0ff4, grouped=true)]
+[INFO ] 2022-05-03 14:19:46.055 [Test worker] c.s.s.i.LessonServiceImpl - In isLessonForGroupExistsAndIgnoreWithId(lesson = [Lesson(id=13, hours=1, linkToMeeting=, subjectForSite=History, lessonType=LECTURE, teacher=Teacher(id=4, name=Ivan, surname=Ivanov, patronymic=Ivanovych, position=null, userId=null, department=null, disable=false), subject=com.softserve.entity.Subject@99c8155d, group=Group(id=4, title=111, disable=false, sortingOrder=null), semester=com.softserve.entity.Semester@202e0ff4, grouped=true)])
+[INFO ] 2022-05-03 14:19:46.056 [Test worker] c.s.r.i.LessonRepositoryImpl - In countLessonDuplicates(lesson = [Lesson(id=13, hours=1, linkToMeeting=, subjectForSite=History, lessonType=LECTURE, teacher=Teacher(id=4, name=Ivan, surname=Ivanov, patronymic=Ivanovych, position=null, userId=null, department=null, disable=false), subject=com.softserve.entity.Subject@99c8155d, group=Group(id=4, title=111, disable=false, sortingOrder=null), semester=com.softserve.entity.Semester@202e0ff4, grouped=true)])
+[INFO ] 2022-05-03 14:19:46.203 [Test worker] c.s.s.i.LessonServiceImpl - In getById(id = [13])
+[INFO ] 2022-05-03 14:19:46.203 [Test worker] c.s.r.i.BasicRepositoryImpl - In findById(id = [13])
+[INFO ] 2022-05-03 14:19:46.220 [Test worker] c.s.r.i.LessonRepositoryImpl - Entered updateGroup(Lesson(id=13, hours=1, linkToMeeting=, subjectForSite=Biology 1, lessonType=LECTURE, teacher=Teacher(id=5, name=Petro, surname=Petrov, patronymic=Petrovych, position=doctor, userId=null, department=null, disable=false), subject=com.softserve.entity.Subject@65958f37, group=Group(id=4, title=111, disable=false, sortingOrder=null), semester=com.softserve.entity.Semester@721fbae2, grouped=true), Lesson(id=13, hours=1, linkToMeeting=, subjectForSite=History, lessonType=LECTURE, teacher=Teacher(id=4, name=Ivan, surname=Ivanov, patronymic=Ivanovych, position=null, userId=null, department=null, disable=false), subject=com.softserve.entity.Subject@99c8155d, group=Group(id=4, title=111, disable=false, sortingOrder=null), semester=com.softserve.entity.Semester@202e0ff4, grouped=true))
+[INFO ] 2022-05-03 14:19:46.592 [Test worker] c.s.s.i.LessonServiceImpl - In getById(id = [14])
+[INFO ] 2022-05-03 14:19:46.593 [Test worker] c.s.r.i.BasicRepositoryImpl - In findById(id = [14])
+[INFO ] 2022-05-03 14:19:46.609 [Test worker] c.s.s.i.LessonServiceImpl - In getById(id = [15])
+[INFO ] 2022-05-03 14:19:46.609 [Test worker] c.s.r.i.BasicRepositoryImpl - In findById(id = [15])

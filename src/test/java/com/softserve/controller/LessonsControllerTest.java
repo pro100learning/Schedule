@@ -19,7 +19,10 @@ import com.softserve.service.TeacherService;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.assertj.core.api.SoftAssertions;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -228,6 +231,8 @@ public class LessonsControllerTest {
 
         Lesson GroupedWithSameSubjectForSite = lessonService.getById(14L);
         Lesson GroupedWithDiffSubjectForSite = lessonService.getById(15L);
+        
+        expectedLesson.setTeacher(teacherService.getById(expectedLesson.getTeacher().getId()));
 
         SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(expectedLesson).isEqualToComparingOnlyGivenFields(GroupedWithSameSubjectForSite,
