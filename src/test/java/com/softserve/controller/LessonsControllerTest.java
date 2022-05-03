@@ -214,7 +214,7 @@ public class LessonsControllerTest {
         Lesson expectedLesson = new LessonInfoMapperImpl().lessonInfoDTOToLesson(lessonDtoForUpdate);
 
         mockMvc.perform(put("/lessons").content(objectMapper.writeValueAsString(lessonDtoForUpdate))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(expectedLesson.getId()))
                 .andExpect(jsonPath("$.hours").value(expectedLesson.getHours()))
