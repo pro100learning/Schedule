@@ -11,8 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        mongodb-version: [ '4.2', '4.4', '5.0' ]
-        redis-version: [4, 5]
+        #mongodb-version: [ '4.2', '4.4', '5.0' ]
+        #redis-version: [4, 5]
+        mongodb-version: '5.0'
+        redis-version: 5
     steps:
       - uses: actions/checkout@v2
         with:
