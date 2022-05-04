@@ -356,8 +356,7 @@ public class StudentControllerTest {
                 Files.readAllBytes(Path.of("src/test/resources/test_students2.csv")));
 
         mockMvc.perform(multipart("/students/import").file(multipartFile).param("groupId", "2"))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json"))
                 .andExpect(jsonPath("$", hasSize(6)))
 
