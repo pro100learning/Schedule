@@ -16,6 +16,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
+@Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "students")
 public class Student implements Serializable {
     @Id
