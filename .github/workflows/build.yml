@@ -9,9 +9,6 @@ jobs:
   build:
     name: Check SonarCloud and start Tests
     runs-on: ubuntu-latest
-    env:
-      mongodb-version: '5.0'
-      redis-version: '5'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -33,17 +30,17 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
-      - name: Start MongoDB v $mongodb-version
+      - name: Start MongoDB v 5.0
         uses: supercharge/mongodb-github-action@1.7.0
         with:
-          mongodb-version: $mongodb-version
+          mongodb-version: 5.0
           mongodb-username: supercharge
           mongodb-password: secret
           mongodb-db: schedules
-      - name: Start Redis v $redis-version
+      - name: Start Redis v 5
         uses: superchargejs/redis-github-action@1.1.0
         with:
-          redis-version: $redis-version
+          redis-version: 5
       - name: SonarCloud analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
