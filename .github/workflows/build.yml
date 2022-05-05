@@ -53,5 +53,5 @@ jobs:
         if: always()
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
-      - name: Code Coverage Report s
+      - name: Code Coverage Report
         uses: romeovs/lcov-reporter-action@v0.2.11
