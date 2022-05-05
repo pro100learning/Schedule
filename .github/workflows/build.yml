@@ -9,7 +9,7 @@ jobs:
   build:
     name: Check SonarCloud and start Tests
     runs-on: ubuntu-latest
-    environment:
+    env:
       mongodb-version: '5.0'
       redis-version: 5
     steps:
