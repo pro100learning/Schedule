@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       mongodb-version: '5.0'
-      redis-version: 5
+      redis-version: '5'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
