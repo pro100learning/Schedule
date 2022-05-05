@@ -7,16 +7,14 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: Check SonarCloud and start Tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        #mongodb-version: [ '4.2', '4.4', '5.0' ]
-        #redis-version: [4, 5]
-        mongodb-version: [ '5.0' ]
-        redis-version: [ 5 ]
+    env:
+      mongodb-version: '5.0'
+      redis-version: 5
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Set up JDK 11
@@ -46,12 +44,12 @@ jobs:
         uses: superchargejs/redis-github-action@1.1.0
         with:
           redis-version: ${{ matrix.redis-version }}
-      - name: Build and analyze
+      - name: SonarCloud analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonarqube -x test --info
-      - name: Run Tests
+      - name: Build and run Tests
         run: gradle build
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
