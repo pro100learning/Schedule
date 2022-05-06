@@ -2,6 +2,7 @@ package com.softserve.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.TreeSet;
 
+@EqualsAndHashCode
 @Getter
 @Setter
 public class SemesterDTO {

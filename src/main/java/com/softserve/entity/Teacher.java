@@ -1,5 +1,6 @@
 package com.softserve.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
+@EqualsAndHashCode
 @Setter
 @Getter
 @ToString
@@ -55,4 +57,6 @@ public class Teacher implements Serializable {
 
     @Column(name = "disable", columnDefinition = "boolean default 'false'")
     private boolean disable = false;
+
+
 }
