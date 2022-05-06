@@ -1,7 +1,10 @@
-delete from de3rldngv565ak."public".lessons;
-delete from de3rldngv565ak."public".subjects;
+TRUNCATE
+    "public".lessons,
+    "public".subjects
+    RESTART IDENTITY
+    CASCADE;
 
-insert into de3rldngv565ak."public".subjects(id, name) VALUES
+insert into "public".subjects(id, name) VALUES
 (4, 'Biology'),
 (5, 'History'),
 (6, 'Astronomy');

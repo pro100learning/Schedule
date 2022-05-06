@@ -21,15 +21,14 @@ import java.time.LocalDate;
 public class TemporarySchedule implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
     private Long id;
 
     @NotNull(message = "Schedule date cannot be empty")
     @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "teacher_for_site")
-    private String teacherForSite;
+    @Column(name = "link_to_meeting")
+    private String linkToMeeting;
 
     @Column(name = "subject_for_site")
     private String subjectForSite;

@@ -33,8 +33,7 @@ public interface ScheduleRepository extends BasicRepository<Schedule, Long> {
 
     List<Schedule> getAllSchedulesByTeacherIdAndSemesterId(Long teacherId, Long semesterId);
 
-
-
+    Schedule getScheduleByObject(Schedule schedule);
     //rooms
     List<Schedule> getScheduleBySemester(Long semesterId);
 
@@ -45,4 +44,8 @@ public interface ScheduleRepository extends BasicRepository<Schedule, Long> {
     void deleteSchedulesBySemesterId(Long semesterId);
 
     Long countInputLessonsInScheduleByLessonId(Long lessonId);
+
+    Long countByLessonIdPeriodIdEvenOddDayOfWeek(Long lessonId, Long periodId, EvenOdd evenOdd, DayOfWeek day);
+
+    List<Schedule> getAllOrdered(Long semesterId);
 }

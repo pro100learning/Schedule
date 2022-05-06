@@ -4,15 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.config.DBConfigTest;
 import com.softserve.config.MyWebAppInitializer;
 import com.softserve.config.WebMvcConfig;
-import com.softserve.dto.*;
+import com.softserve.dto.ScheduleSaveDTO;
 import com.softserve.entity.Lesson;
 import com.softserve.entity.Teacher;
 import com.softserve.entity.enums.EvenOdd;
-import com.softserve.mapper.GroupMapperImpl;
-import com.softserve.mapper.SubjectMapperImpl;
-import com.softserve.mapper.TeacherNameMapperImpl;
 import com.softserve.service.*;
-import com.softserve.service.impl.TeacherServiceImpl;
+import org.assertj.core.api.SoftAssertions;
 import org.hamcrest.Matchers;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.junit.Before;
@@ -28,12 +25,14 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.DayOfWeek;
+import java.util.Arrays;
+import java.util.List;
 
-import static com.softserve.entity.enums.LessonType.LABORATORY;
 import static com.softserve.entity.enums.LessonType.LECTURE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -45,7 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @WithMockUser(username = "first@mail.com", password = "$2a$04$SpUhTZ/SjkDQop/Zvx1.seftJdqvOploGce/wau247zQhpEvKtz9.", roles = "MANAGER")
 @Sql(value = "classpath:create-schedule-before.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = "classpath:delete-schedule-after.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class ScheduleControllerTest {
 
     private MockMvc mockMvc;
@@ -71,7 +69,9 @@ public class ScheduleControllerTest {
 
     @Before
     public void setUp() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).apply(SecurityMockMvcConfigurers.springSecurity()).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .apply(SecurityMockMvcConfigurers.springSecurity())
+                .build();
     }
 
     @Test
@@ -110,7 +110,7 @@ public class ScheduleControllerTest {
         Lesson lesson = new Lesson();
         lesson.setHours(2);
         lesson.setSubjectForSite("lesson for getInfo");
-        lesson.setTeacherForSite("teacher for GetInfo");
+        lesson.setLinkToMeeting("some link....");
         lesson.setLessonType(LECTURE);
         lesson.setSubject(subjectService.getById(4L));
         lesson.setGroup(groupService.getById(4L));
@@ -226,12 +226,45 @@ public class ScheduleControllerTest {
         scheduleSaveDTO.setLessonId(5L);
         scheduleSaveDTO.setPeriodId(4L);
         scheduleSaveDTO.setRoomId(5L);
-        scheduleSaveDTO.setSemesterId(5L);
 
-        mockMvc.perform(post("/schedules").content(objectMapper.writeValueAsString(scheduleSaveDTO))
+        mockMvc.perform(post("/schedules")
+                        .content(objectMapper.writeValueAsString(scheduleSaveDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
     }
+
+    @Test
+    public void saveScheduleWithGroupedLessons() throws Exception {
+        ScheduleSaveDTO scheduleSaveDTO = new ScheduleSaveDTO();
+        scheduleSaveDTO.setDayOfWeek(DayOfWeek.TUESDAY);
+        scheduleSaveDTO.setEvenOdd(EvenOdd.ODD);
+        scheduleSaveDTO.setLessonId(8L);
+        scheduleSaveDTO.setPeriodId(5L);
+        scheduleSaveDTO.setRoomId(4L);
+        ScheduleSaveDTO scheduleGrouped = new ScheduleSaveDTO();
+        scheduleGrouped.setDayOfWeek(DayOfWeek.TUESDAY);
+        scheduleGrouped.setEvenOdd(EvenOdd.ODD);
+        scheduleGrouped.setLessonId(9L);
+        scheduleGrouped.setPeriodId(5L);
+        scheduleGrouped.setRoomId(4L);
+
+        MvcResult mvcResult = mockMvc.perform(post("/schedules")
+                        .content(objectMapper.writeValueAsString(scheduleSaveDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String contentAsString = mvcResult.getResponse().getContentAsString();
+        List<ScheduleSaveDTO> savedSchedules = Arrays.asList(objectMapper.readValue(contentAsString, ScheduleSaveDTO[].class));
+
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(scheduleSaveDTO).isEqualToComparingOnlyGivenFields(savedSchedules.get(0),
+                "dayOfWeek", "evenOdd", "lessonId", "periodId", "roomId");
+        softAssertions.assertThat(scheduleGrouped).isEqualToComparingOnlyGivenFields(savedSchedules.get(1),
+                "dayOfWeek", "evenOdd", "lessonId", "periodId", "roomId");
+        softAssertions.assertAll();
+    }
+
 //  Uncomment when fix response statusCode
     /*@Test
     public void saveScheduleIfScheduleIsExist() throws Exception {
@@ -263,7 +296,6 @@ public class ScheduleControllerTest {
         scheduleSaveDTO.setLessonId(4L);
         scheduleSaveDTO.setPeriodId(5L);
         scheduleSaveDTO.setRoomId(4L);
-        scheduleSaveDTO.setSemesterId(4L);
 
         mockMvc.perform(post("/schedules").content(objectMapper.writeValueAsString(scheduleSaveDTO))
                 .contentType(MediaType.APPLICATION_JSON))

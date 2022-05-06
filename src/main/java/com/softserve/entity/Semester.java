@@ -1,13 +1,15 @@
 package com.softserve.entity;
 
-import lombok.*;
-import org.hibernate.annotations.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.NamedQuery;
+import org.hibernate.annotations.*;
 
-import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,10 +17,16 @@ import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.List;
 
 @NamedQuery(
         name = "findCurrentSemester",
         query = "from Semester s where s.currentSemester= :currentSemester"
+)
+
+@NamedQuery(
+        name = "findDefaultSemester",
+        query = "from Semester s where s.defaultSemester= :defaultSemester"
 )
 
 @FilterDef(name="semesterDisableFilter", parameters={
@@ -38,8 +46,7 @@ import java.util.Set;
 public class Semester implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "serial")
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Description cannot be null or empty")
     private String description;
@@ -58,6 +65,9 @@ public class Semester implements Serializable {
     @Column(name = "current_semester", columnDefinition = "boolean default 'false'")
     private boolean currentSemester = false;
 
+    @Column(name = "default_semester", columnDefinition = "boolean default 'false'")
+    private boolean defaultSemester = false;
+
     @ElementCollection(targetClass = DayOfWeek.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name="semester_day")
@@ -72,6 +82,13 @@ public class Semester implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "period_id")})
     @OrderBy("startTime")
     private Set<Period> periods;
+
+    @ManyToMany
+    @JoinTable(name = "semester_group",
+            joinColumns = { @JoinColumn(name = "semester_id")},
+            inverseJoinColumns = {@JoinColumn(name = "group_id")})
+    @OrderBy("sorting_order")
+    private Set<Group> groups;
 
     @Column(name = "disable",  columnDefinition = "boolean default 'false'")
     private boolean disable = false;

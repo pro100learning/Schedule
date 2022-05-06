@@ -1,11 +1,15 @@
 package com.softserve.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class GroupDTO {
     private Long id;
+    private Boolean disable;
     private String title;
-    private boolean disable;
-
 }

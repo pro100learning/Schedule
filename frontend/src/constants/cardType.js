@@ -1,12 +1,12 @@
-export const cardType = {
+const cardType = {
     LESSON: 'Lesson',
     TEACHER: 'Teacher',
     CLASS: 'Class',
     GROUP: 'Group',
-    ROOM: 'Room',
-    TYPE: 'Type',
+    ROOM: 'room',
+    TYPE: 'type_delete',
     TEMPORARY_SCHEDULE: 'temporary_schedule',
     SUBJECT: 'Subject',
-    WISH: 'Wish',
-    SEMESTER: 'Semester'
+    SEMESTER: 'Semester',
 };
+export { cardType };

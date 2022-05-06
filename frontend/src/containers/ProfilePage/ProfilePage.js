@@ -1,38 +1,24 @@
-import React, { useEffect } from 'react';
-
-import Card from '../../share/Card/Card';
-import { connect } from 'react-redux';
-
 import './ProfilePage.scss';
-
-import ChangePasswordForm from '../../components/ChangePasswordForm/ChangePasswordForm';
-
-import { makeStyles } from '@material-ui/core/styles';
-
-import { resetFormHandler } from '../../helper/formHelper';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import Card from '../../share/Card/Card';
+import { resetFormHandler } from '../../helper/formHelper';
 import { PROFILE_FORM, TEACHER_FORM } from '../../constants/reduxForms';
+import ChangePasswordForm from '../../components/ChangePasswordForm/ChangePasswordForm';
+import { getUserProfile, updateUserPassword, updateUserTeacher } from '../../services/userService';
+import AddTeacherForm from '../../components/TeachersPage/AddTeacherForm/AddTeacherForm';
+import { EMAIL_LABEL } from '../../constants/translationLabels/formElements';
+import { COMMON_MY_PROFILE, DIFFERENT_PASSWORDS } from '../../constants/translationLabels/common';
 
-import {
-    getUserProfile,
-    updateUserPassword,
-    updateUserTeacher
-} from '../../services/userService';
-import AddTeacherForm from '../../components/AddTeacherForm/AddTeacherForm';
-const useStyles = makeStyles(theme => ({
-    rootInput: {
-        width: '20em'
-    }
-}));
-
-let ProfilePage = props => {
+const ProfilePage = (props) => {
     const { t } = useTranslation('formElements');
-    const classes = useStyles();
 
-    const submitPasswordChange = values => {
+    const handlePasswordFormReset = () => resetFormHandler(PROFILE_FORM);
+    const submitPasswordChange = (values) => {
         if (values.new_password !== values.confirm_password) {
             props.setError({
-                registration: { passwords: t('different_passwords') }
+                registration: { passwords: t(DIFFERENT_PASSWORDS) },
             });
             return;
         }
@@ -40,10 +26,9 @@ let ProfilePage = props => {
         handlePasswordFormReset();
     };
 
-    const submitTeacherChange = values => {
+    const submitTeacherChange = (values) => {
         updateUserTeacher(values);
     };
-    const handlePasswordFormReset = () => resetFormHandler(PROFILE_FORM);
     const handleTeacherFormReset = () => resetFormHandler(TEACHER_FORM);
     useEffect(() => {
         getUserProfile();
@@ -52,20 +37,18 @@ let ProfilePage = props => {
     const renderTeacherdataForm = () => {
         if (localStorage.getItem('userRole') === 'ROLE_TEACHER') {
             return (
-                <AddTeacherForm
-                    onSubmit={submitTeacherChange}
-                    onReset={handleTeacherFormReset}
-                />
+                <AddTeacherForm onSubmit={submitTeacherChange} onReset={handleTeacherFormReset} />
             );
         }
+        return null;
     };
 
     return (
         <>
-            <Card class="form-card">
-                <h2 className="form-title">{t('common:my_profile')}</h2>
+            <Card additionClassName="form-card">
+                <h2 className="form-title">{t(COMMON_MY_PROFILE)}</h2>
                 <section>
-                    <span>{t('email_label') + ': '}</span>
+                    <span>{`${t(EMAIL_LABEL)}: `}</span>
                     <span>{localStorage.getItem('email')}</span>
                 </section>
                 <ChangePasswordForm
@@ -78,8 +61,8 @@ let ProfilePage = props => {
     );
 };
 
-const mapStateToProps = state => ({
-    user: state.users.user
+const mapStateToProps = (state) => ({
+    user: state.users.user,
 });
 
 export default connect(mapStateToProps)(ProfilePage);

@@ -1,45 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useTranslation } from 'react-i18next';
 import './LanguageSelector.scss';
+import { languageShorthands } from '../../constants/languages/shorthands';
+import { languageTitles } from '../../constants/languages/titles';
+import ukIcon from '../../share/icons/uk.png';
+import uaIcon from '../../share/icons/ua.png';
 
-const LanguageSelector = props => {
+const LanguageSelector = () => {
     const { i18n } = useTranslation();
     const langFlags = [
         {
-            lang: 'en',
-            img: 'https://image.flaticon.com/icons/svg/555/555417.svg',
-            title: 'English'
+            lang: languageShorthands.English,
+            img: ukIcon,
+            title: languageTitles.English,
         },
         {
-            lang: 'uk',
-            img: 'https://image.flaticon.com/icons/svg/321/321267.svg',
-            title: 'Українська'
-        }
+            lang: languageShorthands.Ukrainian,
+            img: uaIcon,
+            title: languageTitles.Ukrainian,
+        },
     ];
-    let radioLangClasses = {};
-    i18n.languages.forEach(lang => {
-        radioLangClasses[lang] = 'languageItem ';
+    const radioLangClasses = {};
+    langFlags.forEach((lang) => {
+        radioLangClasses[lang.lang] = 'languageItem ';
     });
     radioLangClasses[i18n.language] += ' activeLanguage';
 
-    const changeLanguage = event => {
+    const changeLanguage = (event) => {
         radioLangClasses[i18n.language] = 'languageItem ';
         radioLangClasses[event.target.value] += ' activeLanguage';
         i18n.changeLanguage(event.target.value);
     };
-    const renderLangControls = langItem => (
+    const renderLangControls = (langItem) => (
         <FormControlLabel
             key={langItem.lang}
             control={
                 <>
-                    <Radio
-                        color="primary"
-                        value={langItem.lang}
-                        onChange={changeLanguage}
-                    />
+                    <Radio color="primary" value={langItem.lang} onChange={changeLanguage} />
                     <img
                         className="language-icon"
                         src={langItem.img}
@@ -60,7 +60,7 @@ const LanguageSelector = props => {
             value={i18n.language}
             className="lang_selector"
         >
-            {langFlags.map(langItem => renderLangControls(langItem))}
+            {langFlags.map((langItem) => renderLangControls(langItem))}
         </RadioGroup>
     );
 };

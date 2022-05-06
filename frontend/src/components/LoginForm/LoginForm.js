@@ -1,115 +1,118 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import '../../styles/forms.scss';
 
 import { Field, reduxForm } from 'redux-form';
 
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Card from '@material-ui/core/Card';
 
-import Card from '../../share/Card/Card';
 import renderTextField from '../../share/renderedFields/input';
 
 import { LOGIN_FORM } from '../../constants/reduxForms';
-import { authTypes } from '../../constants/auth';
-import { GOOGLE_LOGIN_URL } from '../../constants/axios';
+import { validation } from '../../constants/validation';
+import { EMAIL_MESSAGE } from '../../constants/translationLabels/validationMessages';
 
 import { required } from '../../validation/validateFields';
-import { FaGoogle } from 'react-icons/fa';
-import { links } from '../../constants/links';
-import { Link } from 'react-router-dom';
-let LoginForm = props => {
-    const { t } = useTranslation('formElements');
-    const { handleSubmit } = props;
+import {
+    PASSWORD_LABEL,
+    EMAIL_LABEL,
+    FORGOT_PASSWORD_LABEL,
+    DONT_HAVE_ACCOUNT_LABEL,
+} from '../../constants/translationLabels/formElements';
+import {
+    LOGIN_TITLE,
+    EMPTY_FIELDS,
+    REGISTRATION_PAGE_TITLE,
+} from '../../constants/translationLabels/common';
+import { REGISTRATION_LINK, RESET_PASSWORD_LINK } from '../../constants/links';
 
-    const error = props.loginError;
+const LoginForm = (props) => {
+    const { handleSubmit, loginHandler, errors, setError, isLoading } = props;
+    const { t } = useTranslation('common');
 
-    const translation = props.translation;
-
-    const errorHandling = value => {
-        if (required(value)) props.setError(required(value));
-        else props.setError(null);
+    const isValidForm = (formValues) => {
+        if (!formValues.email || !formValues.password) {
+            setError({ login: t(EMPTY_FIELDS) });
+            return false;
+        }
+        if (!validation.EMAIL.test(formValues.email)) {
+            setError({ login: t(EMAIL_MESSAGE) });
+            return false;
+        }
+        return true;
+    };
+    const onLogin = (values) => {
+        const isValid = isValidForm(values);
+        if (isValid) {
+            loginHandler(values);
+        }
+    };
+    const errorHandling = (value) => {
+        if (required(value)) setError(required(value));
+        else setError(null);
     };
 
-    let form = (
-        <form onSubmit={handleSubmit}>
-            <Field
-                name="email"
-                className="form-field"
-                component={renderTextField}
-                label={t('email_label')}
-                error={!!error}
-                helperText={error ? error.login : null}
-                onChange={e => errorHandling(e.target.value)}
-            />
-            <Field
-                name="password"
-                className="form-field"
-                type="password"
-                component={renderTextField}
-                label={t('password_label')}
-                error={!!error}
-                onChange={() => props.setError(null)}
-            />
-            <Button
-                className="buttons-style under-line"
-                type="submit"
-                variant="contained"
-                color="primary"
-            >
-                {translation('login_title')}
-            </Button>
-            <div className="group-btns">
-                <button
-                    type="button"
-                    className="auth-link"
-                    onClick={() => {
-                        props.switchAuthMode(authTypes.REGISTRATION);
-                        props.setError(null);
-                    }}
-                >
-                   <Link  className="navLinks" to={links.Registration}>{translation('no_account')}</Link>
-                </button>
-                <button
-                    type="button"
-                    className="auth-link"
-                    onClick={() => {
-                        props.switchAuthMode(authTypes.RESET_PASSWORD);
-                        props.setError(null);
-                    }}
-                >
-                   <Link  className="navLinks" to={links.RESET_PASSWORD}>{translation('forgot_password')}</Link>
-                </button>
-            </div>
-            {}
-            <Button
-                variant="contained"
-                color="secondary"
-                onClick={() =>
-                    (window.document.location.href =
-                        process.env.REACT_APP_API_BASE_URL.trim() +
-                        GOOGLE_LOGIN_URL)
-                }
-            >
-                <FaGoogle />
-                {t('login_via_google')}
-            </Button>
-        </form>
-    );
-
-    if (props.isLoading) {
-        form = <CircularProgress />;
-    }
-
     return (
-        <Card class="auth-card">
-            <h2 className="under-line">{translation('login_page_title')}</h2>
-            {form}
+        <Card className="auth-card">
+            <div className="auth-card-header">
+                <h2 className="auth-card-title">{t(LOGIN_TITLE)}</h2>
+            </div>
+
+            {isLoading ? (
+                <CircularProgress size="70px" className="loading-circle auth-loading" />
+            ) : (
+                <form onSubmit={handleSubmit(onLogin)} className="auth-form">
+                    <Field
+                        name="email"
+                        className="form-input"
+                        component={renderTextField}
+                        label={t(EMAIL_LABEL)}
+                        error={!!errors}
+                        helperText={errors ? errors.login : null}
+                        onChange={(e) => errorHandling(e.target.value)}
+                    />
+                    <Field
+                        name="password"
+                        className="form-input"
+                        type="password"
+                        component={renderTextField}
+                        label={t(PASSWORD_LABEL)}
+                        error={!!errors}
+                        onChange={() => setError(null)}
+                    />
+                    <div className="forgot-password-label">
+                        <Link to={RESET_PASSWORD_LINK} className="form-link">
+                            {t(FORGOT_PASSWORD_LABEL)}
+                        </Link>
+                    </div>
+                    <div className="auth-form-actions">
+                        <Button
+                            className="auth-confirm-button"
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                        >
+                            {t(LOGIN_TITLE)}
+                        </Button>
+                    </div>
+
+                    <div className="auth-form-footer">
+                        <span>{t(DONT_HAVE_ACCOUNT_LABEL)}</span>
+                        <Link to={REGISTRATION_LINK} className="form-link">
+                            {t(REGISTRATION_PAGE_TITLE)}
+                        </Link>
+                    </div>
+                </form>
+            )}
         </Card>
     );
 };
 
-LoginForm = reduxForm({
-    form: LOGIN_FORM
+const LoginReduxForm = reduxForm({
+    form: LOGIN_FORM,
 })(LoginForm);
 
-export default LoginForm;
+export default LoginReduxForm;

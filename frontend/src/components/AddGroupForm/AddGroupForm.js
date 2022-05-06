@@ -1,82 +1,110 @@
-import { connect } from 'react-redux';
-import React, { useEffect } from 'react';
-import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import './AddGroupForms.scss';
-import Card from '../../share/Card/Card';
-import { GROUP_FORM } from '../../constants/reduxForms';
-import renderTextField from '../../share/renderedFields/input';
+import { Field } from 'redux-form';
 import {
-    required,
-    uniqueGroup,
-    minLengthValue
-} from '../../validation/validateFields';
+    CREATE_TITLE,
+    EDIT_TITLE,
+    FORM_GROUP_LABEL_AFTER,
+    GROUP_LABEL,
+    GROUP_Y_LABEL,
+    SAVE_BUTTON_LABEL,
+} from '../../constants/translationLabels/formElements';
+import { getClearOrCancelTitle, setDisableButton } from '../../helper/disableComponent';
+import { renderAutocompleteField } from '../../helper/renderAutocompleteField';
+import renderTextField from '../../share/renderedFields/input';
+import { minLengthValue, required, uniqueGroup } from '../../validation/validateFields';
+import './AddGroupForms.scss';
 
-let AddGroup = props => {
+export const AddGroup = (props) => {
+    const {
+        clearGroupStart,
+        submitGroupStart,
+        handleSubmit,
+        initialize,
+        submitting,
+        setGroup,
+        pristine,
+        invalid,
+        groups,
+        group,
+    } = props;
     const { t } = useTranslation('formElements');
-    const { handleSubmit, pristine, onReset, submitting } = props;
 
+    const removeCurrentGroup = () => groups.filter((el) => el.id !== group.id);
+    const groupsForAutocomplete = group.id ? removeCurrentGroup() : groups;
     useEffect(() => {
-        if (props.group) {
-            if (props.group.id) {
-                props.initialize({
-                    id: props.group.id,
-                    title: props.group.title
-                });
-            } else {
-                props.initialize();
-            }
+        const groupIndex = groups.findIndex(({ id }) => id === group.id);
+        const afterId = groups.find((item, index) => index === groupIndex - 1);
+        if (group.id) {
+            initialize({
+                id: group.id,
+                title: group.title,
+                afterId,
+            });
+        } else {
+            initialize();
         }
-    }, [props.group.id]);
+    }, [group.id]);
+
+    const submitGroup = (data) => {
+        const afterId = data.afterId ? data.afterId.id : null;
+        submitGroupStart({ ...data, disable: false, afterId });
+        setGroup({});
+    };
+
+    const onReset = () => {
+        setGroup({});
+        clearGroupStart();
+    };
 
     return (
-        <Card class="form-card group-form">
-            <h2 className="group-form__title">
-                {props.group.id ? t('edit_title') : t('create_title')}
-                {t('group_y_label')}
-            </h2>
-            <form onSubmit={handleSubmit}>
+        <div className="group-form">
+            <h3 className="group-form-title">
+                {group.id ? t(EDIT_TITLE) : t(CREATE_TITLE)}
+                {t(GROUP_Y_LABEL)}
+            </h3>
+            <form onSubmit={handleSubmit((data) => submitGroup(data))}>
                 <Field
                     className="form-field"
                     name="title"
                     id="title"
-                    label={t('group_label') + ':'}
+                    label={`${t(GROUP_LABEL)}:`}
                     component={renderTextField}
-                    validate={[required, minLengthValue, uniqueGroup]}
+                    validate={[required, uniqueGroup, minLengthValue]}
                 />
-                <div className="form-buttons-container group-btns">
+                <Field
+                    className="select-field"
+                    name="afterId"
+                    component={renderAutocompleteField}
+                    label={t(FORM_GROUP_LABEL_AFTER)}
+                    type="text"
+                    values={groupsForAutocomplete}
+                    getOptionLabel={(item) => (item ? item.title : '')}
+                ></Field>
+                <div className="form-buttons-container">
                     <Button
+                        size="small"
                         variant="contained"
                         className="buttons-style "
                         color="primary"
-                        disabled={pristine || submitting}
+                        disabled={invalid || pristine || submitting}
                         type="submit"
                     >
-                        {t('save_button_label')}
+                        {t(SAVE_BUTTON_LABEL)}
                     </Button>
                     <Button
+                        size="small"
                         type="button"
                         className="buttons-style"
                         variant="contained"
-                        disabled={pristine || submitting}
+                        disabled={setDisableButton(pristine, submitting, group.id)}
                         onClick={onReset}
                     >
-                        {t('clear_button_label')}
+                        {getClearOrCancelTitle(group.id, t)}
                     </Button>
                 </div>
             </form>
-        </Card>
+        </div>
     );
 };
-
-const mapStateToProps = state => ({
-    group: state.groups.group
-});
-
-export default connect(mapStateToProps)(
-    reduxForm({
-        form: GROUP_FORM
-    })(AddGroup)
-);

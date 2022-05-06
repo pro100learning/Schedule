@@ -1,8 +1,17 @@
-delete from de3rldngv565ak."public".schedules;
-delete from de3rldngv565ak."public".lessons;
-delete from de3rldngv565ak."public".groups;
+TRUNCATE
+    "public".students,
+    "public".users,
+    "public".groups
+    RESTART IDENTITY
+    CASCADE;
 
-insert into de3rldngv565ak."public".groups(id, title) values
-(4,'111'),
-(5,'222'),
-(6,'333');
+insert into "public".groups(id, title, disable, sorting_order) values
+(4,'444', false, 2),
+(5,'555', true, null),
+(6, '666', false, 1);
+
+insert into "public" .users(id, email, password, role) values
+(1, 'zzz1@gmail.com', 'Zzzzz123!', 'ROLE_USER');
+
+insert into "public".students(id, name, patronymic, surname, group_id, user_id) values
+(4, 'Name One', 'Patron One', 'Surname One', 4, 1);

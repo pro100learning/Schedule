@@ -1,90 +1,87 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { Field, reduxForm } from 'redux-form';
 
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Card from '../../share/Card/Card';
+import { Link } from 'react-router-dom';
+import Card from '@material-ui/core/Card';
 import renderTextField from '../../share/renderedFields/input';
 
 import { RESET_PASSWORD_FORM } from '../../constants/reduxForms';
-import { authTypes } from '../../constants/auth';
 
 import { email, required } from '../../validation/validateFields';
-import { links } from '../../constants/links';
-import {Link} from 'react-router-dom';
+import {
+    EMAIL_LABEL,
+    RESET_PASSWORD_HELPER_TEXT,
+} from '../../constants/translationLabels/formElements';
+import { LOGIN_LINK } from '../../constants/links';
+import i18n from '../../i18n';
+import {
+    LOGIN_TITLE,
+    RESET_PASSWORD_PAGE_TITLE,
+    RESET_PASSWORD_LABEL,
+} from '../../constants/translationLabels/common';
 
-let ResetPasswordForm = props => {
-    const { t } = useTranslation('formElements');
-    const { handleSubmit } = props;
+const ResetPasswordForm = (props) => {
+    const { handleSubmit, resetPasswordError, setError, isLoading } = props;
 
-    const error = props.resetPasswordError;
-
-    const translation = props.translation;
+    const error = resetPasswordError;
 
     const emailValidate = { validate: [required, email] };
 
-    const errorHandling = value => {
+    const errorHandling = (value) => {
         if (required(value)) {
-            props.setError(required(value));
+            setError(required(value));
         } else {
-            props.setError(null);
+            setError(null);
         }
     };
 
-    let form = (
-        <form onSubmit={handleSubmit}>
-            <Field
-                name="email"
-                className="form-field"
-                component={renderTextField}
-                label={t('email_label')}
-                {...(!error ? emailValidate : error)}
-                onChange={e => {
-                    errorHandling(e.target.value);
-                }}
-            />
-            <Button
-                className="buttons-style under-line"
-                type="submit"
-                variant="contained"
-                color="primary"
-            >
-                {translation('reset_password_button')}
-            </Button>
-            <div className="group-btns">
-                <button
-                    type="button"
-                    className="auth-link"
-                    onClick={() => {
-                        props.switchAuthMode(authTypes.LOGIN);
-                        props.setError(null);
-                    }}
-                >
-                  <Link  className="navLinks" to={links.LOGIN} >{translation('login_page_title')}</Link>
-                </button>
-            </div>
-        </form>
-    );
-
-    if (props.isLoading) {
-        form = <CircularProgress />;
-    }
-
     return (
-        <Card class="auth-card">
-            <h2 className="under-line">
-                {translation('reset_password_page_title')}
-            </h2>
-            {form}
+        <Card className="auth-card">
+            <div className="auth-card-header">
+                <h2 className="auth-card-title">{i18n.t(RESET_PASSWORD_PAGE_TITLE)}</h2>
+                <span className="auth-card-subtitle">{i18n.t(RESET_PASSWORD_HELPER_TEXT)}</span>
+            </div>
+            {isLoading ? (
+                <CircularProgress size="70px" className="loading-circle auth-loading" />
+            ) : (
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <Field
+                        name="email"
+                        className="form-input"
+                        component={renderTextField}
+                        label={i18n.t(EMAIL_LABEL)}
+                        {...(!error ? emailValidate : error)}
+                        onChange={(e) => {
+                            errorHandling(e.target.value);
+                        }}
+                    />
+                    <div className="auth-form-actions">
+                        <Button
+                            className="auth-confirm-button"
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                        >
+                            {i18n.t(RESET_PASSWORD_LABEL)}
+                        </Button>
+                    </div>
+                    <div className="auth-form-footer">
+                        <Link to={LOGIN_LINK} className="form-link">
+                            {i18n.t(LOGIN_TITLE)}
+                        </Link>
+                    </div>
+                </form>
+            )}
         </Card>
     );
 };
 
-ResetPasswordForm = reduxForm({
-    form: RESET_PASSWORD_FORM
+const ResetPasswordReduxForm = reduxForm({
+    form: RESET_PASSWORD_FORM,
 })(ResetPasswordForm);
 
-export default ResetPasswordForm;
+export default ResetPasswordReduxForm;

@@ -4,94 +4,105 @@ import { connect } from 'react-redux';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 
+import { useTranslation } from 'react-i18next';
 import ClassForm from '../../components/ClassForm/ClassForm';
 import Card from '../../share/Card/Card';
-import ConfirmDialog from '../../share/modals/dialog';
+import CustomDialog from '../Dialogs/CustomDialog';
+import { dialogTypes } from '../../constants/dialogs';
 import { cardType } from '../../constants/cardType';
 
 import {
-    getClassScheduleListService,
-    addClassScheduleOneService,
-    getClassScheduleOneService,
-    deleteClassScheduleOneService,
-    clearClassScheduleOneService
-} from '../../services/classService';
-import { useTranslation } from 'react-i18next';
+    classFormHandler,
+    getClassScheduleListStart,
+    getClassScheduleByIdStart,
+    deleteClassScheduleStart,
+    clearClassScheduleSuccess,
+} from '../../actions/classes';
+import { setIsOpenConfirmDialog } from '../../actions/dialog';
 
 import { handleSnackbarOpenService } from '../../services/snackbarService';
 import { snackbarTypes } from '../../constants/snackbarTypes';
-import NavigationPage from '../../components/Navigation/NavigationPage';
-import { navigation } from '../../constants/navigationOrder';
+import {
+    CLASS_LABEL,
+    CLASS_FROM_LABEL,
+    CLASS_TO_LABEL,
+    MAX_COUNT_CLASSES_REACHED,
+} from '../../constants/translationLabels/formElements';
+import {
+    COMMON_EDIT_HOVER_TITLE,
+    COMMON_DELETE_HOVER_TITLE,
+} from '../../constants/translationLabels/common';
 
-const ClassSchedule =(props) => {
+const ClassSchedule = (props) => {
     const { t } = useTranslation('formElements');
-    const [open, setOpen] = useState(false);
-    const [classId, setClassId] = React.useState(-1);
-    useEffect(() => getClassScheduleListService(), []);
+    const {
+        isOpenConfirmDialog,
+        setOpenConfirmDialog,
+        formHandler,
+        getClassScheduleList,
+        deleteClassSchedule,
+        getClassScheduleById,
+        clearClassSchedule,
+    } = props;
+    const [classId, setClassId] = useState(-1);
+    useEffect(() => {
+        getClassScheduleList();
+    }, []);
 
-    const submit = values => {
+    const submit = (values) => {
         if (!values.id && props.classScheduler.length >= 7)
             return handleSnackbarOpenService(
                 true,
                 snackbarTypes.ERROR,
-                t('max_count_classes_reached')
+                t(MAX_COUNT_CLASSES_REACHED),
             );
-        addClassScheduleOneService(values);
+        return formHandler(values);
     };
 
-    const handleEdit = classId => {
-        getClassScheduleOneService(classId);
+    const handleEdit = (id) => {
+        getClassScheduleById(id);
     };
 
-    const handleFormReset = () => {
-        clearClassScheduleOneService();
+    const handleClickOpen = (id) => {
+        setClassId(id);
+        setOpenConfirmDialog(true);
     };
 
-    const handleClickOpen = classId => {
-        setClassId(classId);
-        setOpen(true);
-    };
-
-    const handleClose = classId => {
-        setOpen(false);
-        if (!classId) {
-            return;
-        }
-        deleteClassScheduleOneService(classId);
+    const handleDelete = (id) => {
+        setOpenConfirmDialog(false);
+        deleteClassSchedule(id);
     };
 
     return (
-        <>
-            <NavigationPage val={navigation.BELLS}/>
         <div className="cards-container">
-            <ConfirmDialog
-                selectedValue={''}
-                cardId={classId}
+            <CustomDialog
+                type={dialogTypes.DELETE_CONFIRM}
+                handelConfirm={() => handleDelete(classId)}
                 whatDelete={cardType.CLASS.toLowerCase()}
-                open={open}
-                onClose={handleClose}
+                open={isOpenConfirmDialog}
             />
-            <ClassForm onSubmit={submit} onReset={handleFormReset} />
+
+            <ClassForm onSubmit={submit} onReset={clearClassSchedule} />
             <section className="container-flex-wrap">
-                {props.classScheduler.map(schedule => (
-                    <Card class="class-card-width" key={schedule.id}>
+                {props.classScheduler.map((schedule) => (
+                    <Card additionClassName="class-card-width" key={schedule.id}>
                         <div className="cards-btns">
                             <FaEdit
                                 className="svg-btn"
-                                title={t('common:edit_hover_title')}
+                                title={t(COMMON_EDIT_HOVER_TITLE)}
                                 onClick={() => handleEdit(schedule.id)}
                             />
                             <MdDelete
                                 className="svg-btn"
-                                title={t('common:delete_hover_title')}
+                                title={t(COMMON_DELETE_HOVER_TITLE)}
                                 onClick={() => handleClickOpen(schedule.id)}
                             />
                         </div>
                         <p>
-                            {t('class_label')}: {schedule.class_name}
+                            {t(CLASS_LABEL)}: {schedule.class_name}
                         </p>
                         <p>
-                            {t('class_from_label')} - {t('class_to_label')}
+                            {t(CLASS_FROM_LABEL)} - {t(CLASS_TO_LABEL)}
                         </p>
                         <p>
                             {schedule.startTime} - {schedule.endTime}
@@ -100,13 +111,21 @@ const ClassSchedule =(props) => {
                 ))}
             </section>
         </div>
-        </>
     );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     classScheduler: state.classActions.classScheduler,
-    ClassScheduleOne: state.classActions.classScheduleOne
+    isOpenConfirmDialog: state.dialog.isOpenConfirmDialog,
 });
 
-export default connect(mapStateToProps, {})(ClassSchedule);
+const mapDispatchToProps = (dispatch) => ({
+    setOpenConfirmDialog: (newState) => dispatch(setIsOpenConfirmDialog(newState)),
+    formHandler: (values) => dispatch(classFormHandler(values)),
+    getClassScheduleList: () => dispatch(getClassScheduleListStart()),
+    deleteClassSchedule: (id) => dispatch(deleteClassScheduleStart(id)),
+    getClassScheduleById: (id) => dispatch(getClassScheduleByIdStart(id)),
+    clearClassSchedule: () => dispatch(clearClassScheduleSuccess()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClassSchedule);

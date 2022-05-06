@@ -1,35 +1,28 @@
 import React, { Fragment, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import GroupSchedulePage from '../GroupSchedulePage/GroupSchedulePage';
+import { getPublicClassScheduleStart } from '../../actions/classes';
 
-import { userRoles } from '../../constants/userRoles';
+import { HOME_TITLE } from '../../constants/translationLabels/common';
 
-import GroupSchedulePage from '../../components/GroupSchedulePage/GroupSchedulePage';
-
-import { getPublicClassScheduleListService } from '../../services/classService';
-import { getMyTeacherWishesService } from '../../services/teacherWishService';
-import { clearSemesterService } from '../../services/semesterService';
-import { setScheduleSemesterIdService } from '../../services/scheduleService';
-
-const HomePage = props => {
+const HomePage = (props) => {
+    const { getClassScheduleList } = props;
     const { t } = useTranslation('common');
 
-    useEffect(() => getPublicClassScheduleListService(), []);
-    useEffect(()=>setScheduleSemesterIdService(0))
     useEffect(() => {
-        if (props.userRole === userRoles.TEACHER) {
-            getMyTeacherWishesService();
-        }
+        getClassScheduleList();
     }, []);
 
     return (
         <Fragment>
-            <h1>{t('home_title')}</h1>
+            <h1>{t(HOME_TITLE)}</h1>
             <GroupSchedulePage scheduleType="default" />
         </Fragment>
     );
 };
+const mapDispatchToProps = (dispatch) => ({
+    getClassScheduleList: () => dispatch(getPublicClassScheduleStart()),
+});
 
-const mapStateToProps = state => ({ userRole: state.auth.role });
-
-export default connect(mapStateToProps)(HomePage);
+export default connect(null, mapDispatchToProps)(HomePage);

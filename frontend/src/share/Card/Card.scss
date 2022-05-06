@@ -1,11 +1,9 @@
-@import '../../App';
-
-@mixin set-width($form-width) {
-    width: $form-width;
-}
+@import '../../styles/colors.scss';
+@import '../../styles/fonts.scss';
+@import '../../styles/variables.scss';
 
 .card {
-    background-color: $main-color;
+    background-color: $white;
     display: inline-block;
     margin: 10px;
     padding: 1rem;
@@ -14,16 +12,16 @@
 }
 
 .form-card {
-    @include set-width(20em);
+    width: 340px;
 
     position: sticky;
-    top: 1em;
+    top: 1rem;
 
-    @media (max-width: 850px) {
+    @media (max-width: $md-width-lanscape) {
         position: relative;
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: $md-small) {
         max-width: 85%;
         margin-bottom: 30px;
     }
@@ -34,26 +32,27 @@
 }
 
 .form-field {
-    width: 20em;
-
-    @media (max-width: 500px) {
-        & input {
-            max-width: 100%;
-        }
-    }
+    width: $full-size;
 }
 
 .class-card-width {
-    width: 11em;
+    width: 200px;
 }
 
 .done-card {
-    background-color: $main-color;
-    width: 15em;
+    background-color: $white;
+    width: 150px;
+    height: 145px;
+}
+
+.department-card {
+    background-color: $white;
+    width: 150px;
+    height: 50px;
 }
 
 .vacation-card {
-    background-color: #f5deb3;
+    background-color: $yellow;
     text-align: center;
     min-width: 272px;
 }
@@ -67,22 +66,6 @@
 }
 
 .card-title {
-    width: 95%;
+    width: $full-size;
     text-align: center;
-}
-
-.green-card {
-    background-color: #90ee90;
-}
-
-.auth-card {
-    width: 450px;
-
-    @media (max-width: 500px) {
-        max-width: 90%;
-    }
-
-    .form-field {
-        width: 25em;
-    }
 }
