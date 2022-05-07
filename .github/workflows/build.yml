@@ -7,7 +7,6 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Check SonarCloud and start Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -20,7 +19,7 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
           cache: 'gradle'
-      - run: ./gradlew build --no-daemon
+      - run: ./gradlew build -x test --no-daemon
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
