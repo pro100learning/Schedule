@@ -1,3 +1,7 @@
+![Coverage](.github/badges/jacoco.svg)
+![Branches](.github/badges/branches.svg)
+[![Coverage](.github/badges/jacoco.svg)](https://github.com/pro100learning/Schedule/actions/workflows/build.yml)
+![Branches](.github/badges/branches.svg)(https://github.com/pro100learning/Schedule/actions/workflows/build.yml)
 # Class chedule
 ## General info
 This repository contains a source code of the Class Schedule Project.

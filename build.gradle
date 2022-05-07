@@ -53,14 +53,12 @@ sonarqube {
 
 jacoco {
     toolVersion = "0.8.7"
-    reportsDirectory = layout.buildDirectory.dir('jacocoReport')
 }
 
-jacocoTestReport {
+tasks.jacocoTestReport {
     reports {
-        xml.required = true
-        csv.required = true
-        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        xml.enabled(true)
+        csv.enabled(true)
     }
 }
 
