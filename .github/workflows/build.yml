@@ -7,6 +7,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
+    name: Check SonarCloud and start Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -49,5 +50,11 @@ jobs:
         if: always()
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
-      - name: Code Coverage Reports
-        uses: romeovs/lcov-reporter-action@v0.2.11
+      - name: Add coverage to PR
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.2
+        with:
+          paths: ${{ github.workspace }}/build/jacocoTestReport/test/jacocoTestReport.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
