@@ -49,6 +49,8 @@ sonarqube {
         property "sonar.projectKey", "pro100learning_Schedule"
         property "sonar.organization", "pro100learning"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+        property "sonar.junit.reportsPath", "**/build/test-results/test/TEST-*.xml"
     }
 }
 
