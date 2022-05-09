@@ -30,17 +30,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonarqube -x test
-      - name: Start MongoDB v 5.0
-        uses: supercharge/mongodb-github-action@1.7.0
-        with:
-          mongodb-version: 5.0
-          mongodb-username: supercharge
-          mongodb-password: secret
-          mongodb-db: schedules
-      - name: Start Redis v 5
-        uses: superchargejs/redis-github-action@1.1.0
-        with:
-          redis-version: 5
       - name: Build and run Tests
         run: gradle build
       - name: Publish Test Report

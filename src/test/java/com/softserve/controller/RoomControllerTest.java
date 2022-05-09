@@ -7,7 +7,6 @@ import com.softserve.config.WebMvcConfig;
 import com.softserve.dto.RoomDTO;
 import com.softserve.dto.RoomTypeDTO;
 import com.softserve.entity.Room;
-
 import com.softserve.entity.enums.EvenOdd;
 import com.softserve.mapper.RoomMapperImpl;
 import org.junit.Before;
