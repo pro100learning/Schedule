@@ -13,6 +13,7 @@ plugins {
     id 'java'
     id "org.sonarqube" version "3.3"
     id 'jacoco'
+    id 'checkstyle'
 }
 
 group 'com.softserve'
@@ -59,6 +60,26 @@ tasks.jacocoTestReport {
     reports {
         xml.enabled(true)
         csv.enabled(true)
+        html.enabled(true)
+    }
+}
+
+apply plugin: 'checkstyle'
+checkstyle {
+    toolVersion '7.8.1'
+    configFile file("config/checkstyle/checkstyle.xml")
+}
+checkstyleMain {
+    source ='src/main/java'
+}
+checkstyleTest {
+    source ='src/test/java'
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.enabled false
+        html.enabled true
     }
 }
 
