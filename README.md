@@ -1,5 +1,5 @@
-![Coverage](.github/badges/jacoco.svg)
-![Branches](.github/badges/branches.svg)
+![Coverage](.github/badges/60.svg)
+![Branches](.github/badges/60.svg)
 [![Coverage](.github/badges/jacoco.svg)](https://github.com/pro100learning/Schedule/actions/workflows/build.yml)
 [![Branches](.github/badges/branches.svg)](https://github.com/pro100learning/Schedule/actions/workflows/build.yml)
 # Class chedule
