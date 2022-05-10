@@ -56,3 +56,4 @@ jobs:
           coverage-badge-filename: jacoco.svg
           generate-branches-badge: true
           branches-badge-filename: branches.svg
+          generate-summary: true
