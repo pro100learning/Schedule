@@ -20,7 +20,6 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
           cache: 'gradle'
-      - run: ./gradlew build
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
@@ -31,7 +30,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build
+        run: ./gradlew sonarqube -x test
       - name: Build and run Tests
         run: gradle build
       - name: Publish Test Report
@@ -39,22 +38,11 @@ jobs:
         if: always()
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
-      - name: Add coverage to PR
-        id: jacoco
+      - name: JaCoCo report
         uses: madrapps/jacoco-report@v1.2
         with:
-          title: Schedule
-          paths: ${{ github.workspace }}/build/reports/jacoco/test/jacocoTestReport.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Test Coverage Report
           min-coverage-overall: 50
           min-coverage-changed-files: 70
-      - name: Generate JaCoCo Badge
-        uses: cicirello/jacoco-badge-generator@v2
-        with:
-          jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
-          badges-directory: .github/badges
-          generate-coverage-badge: true
-          coverage-badge-filename: jacoco.svg
-          generate-branches-badge: true
-          branches-badge-filename: branches.svg
-          generate-summary: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          paths: '**/build/reports/jacoco/test/*.xml'
