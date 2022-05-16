@@ -71,14 +71,6 @@ jacocoTestCoverageVerification {
                 minimum = 0.5
             }
         }
-        if(project.hasProperty("checkClases")) {
-            rule {
-                element = 'CLASS'
-                limit {
-                    minimum = 0.7
-                }
-            }
-        }
     }
 }
 
