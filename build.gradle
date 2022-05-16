@@ -42,17 +42,13 @@ if (System.getenv('$buildDir') != "") {
     stage.dependsOn(copyToLib)
 }
 
-stage.dependsOn(copyToLib)
-
 apply from: 'liquibase.gradle'
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "pro100learning_Schedule"
-        property "sonar.organization", "pro100learning"
+        property "sonar.projectKey", "nromanen_Schedule"
+        property "sonar.organization", "nromanen"
         property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
-        property "sonar.junit.reportsPath", "**/build/test-results/test/TEST-*.xml"
     }
 }
 
@@ -60,32 +56,25 @@ jacoco {
     toolVersion = "0.8.7"
 }
 
-tasks.jacocoTestReport {
+jacocoTestReport {
+    dependsOn(test)
     reports {
         xml.enabled(true)
-        csv.enabled(true)
-        html.enabled(true)
     }
 }
 
-/*apply plugin: 'checkstyle'
-checkstyle {
-    toolVersion '7.8.1'
-    configFile file("config/checkstyle/checkstyle.xml")
-}
-checkstyleMain {
-    source ='src/main/java'
-}
-checkstyleTest {
-    source ='src/test/java'
+jacocoTestCoverageVerification {
+    violationRules {
+        failOnViolation = true
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+    }
 }
 
-tasks.withType(Checkstyle) {
-    reports {
-        xml.enabled false
-        html.enabled true
-    }
-}*/
+check.dependsOn jacocoTestCoverageVerification
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.11'
