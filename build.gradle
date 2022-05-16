@@ -71,10 +71,20 @@ jacocoTestCoverageVerification {
                 minimum = 0.5
             }
         }
+        if(project.hasProperty("checkClases")) {
+            rule {
+                element = 'CLASS'
+                limit {
+                    minimum = 0.7
+                }
+            }
+        }
     }
 }
 
 check.dependsOn jacocoTestCoverageVerification
+
+apply from: "$projectDir/gradle/preCommit.gradle"
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.11'

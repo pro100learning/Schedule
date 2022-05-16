@@ -29,6 +29,7 @@ import java.util.Map;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+
     private final SemesterService semesterService;
     private final SemesterMapper semesterMapper;
     private final ScheduleMapper scheduleMapper;
