@@ -1,8 +1,4 @@
-![Coverage](.github/badges/60.svg)
-![Branches](.github/badges/60.svg)
-[![Coverage](.github/badges/jacoco.svg)](https://github.com/pro100learning/Schedule/actions/workflows/build.yml)
-[![Branches](.github/badges/branches.svg)](https://github.com/pro100learning/Schedule/actions/workflows/build.yml)
-# Class chedule
+# Class schedule
 ## General info
 This repository contains a source code of the Class Schedule Project.
 
@@ -23,7 +19,7 @@ In order to create a local copy of the project you need:
 1. Download and install the last version of PostgreSQL https://www.postgresql.org/download/
 2. Configure your username, password and connection url in `hibernate.properties` file
 
-##Redis
+## Redis
 1. Download and install the last version of Redis  https://redis.io/download
 2. Configure connection url in `cache.properties` file
 
