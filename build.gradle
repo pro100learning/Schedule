@@ -98,7 +98,7 @@ tasks.withType(Checkstyle) {
     }
 }*/
 
-apply from: "$projectDir/gradle/preCommit.gradle"
+apply from: "$projectDir/preCommit.gradle"
 
 dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.11'
