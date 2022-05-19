@@ -19,15 +19,14 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import static org.apache.commons.lang3.StringUtils.containsAny;
-import static org.apache.commons.lang3.StringUtils.isMixedCase;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.length;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Slf4j
 @Transactional
@@ -285,7 +284,7 @@ public class UserServiceImpl implements UserService {
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             User registrationUser = save(user);
-            sendRegistrationMail(user, registrationMessage);
+            //sendRegistrationMail(user, registrationMessage);
             return registrationUser;
         } else {
             throw new IncorrectPasswordException();

@@ -49,6 +49,9 @@ jobs:
       - name: Run check style
         uses: nikitasavinov/checkstyle-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: 'github-pr-check'
-          tool_name: 'testtool'
+          tool_name: 'reviewdog'
+          fail_on_error: false
+          checkstyle_version: 9.0
+          properties_file: config/checkstyle/checkstyle.xml
+          github_token: ${{ secrets.GITHUB_TOKEN }}
