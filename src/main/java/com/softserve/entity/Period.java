@@ -1,4 +1,5 @@
 package com.softserve.entity;
+
 import lombok.*;
 
 import javax.persistence.*;

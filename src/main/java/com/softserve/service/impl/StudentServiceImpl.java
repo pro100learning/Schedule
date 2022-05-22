@@ -205,7 +205,7 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentImportDTO saveStudentFromFile(Long groupId, StudentImportDTO student) {
         try {
-            if(student.getEmail() == null || student.getEmail().isEmpty()){
+            if (student.getEmail() == null || student.getEmail().isEmpty()) {
                 log.error("Empty or null email: {}", student.getEmail());
                 student.setImportSaveStatus(ImportSaveStatus.VALIDATION_ERROR);
                 return student;
@@ -223,7 +223,7 @@ public class StudentServiceImpl implements StudentService {
             if (studentFromBase.isEmpty()) {
                 return assignUserToNewStudent(student, userOptional, newStudent, group);
             }
-                return checkForEmptyFieldsOfExistingStudent(student, userOptional, studentFromBase);
+            return checkForEmptyFieldsOfExistingStudent(student, userOptional, studentFromBase);
         } catch (ConstraintViolationException e) {
             student.setImportSaveStatus(ImportSaveStatus.VALIDATION_ERROR);
             log.error("VALIDATION_ERROR while saving student with email {}", student.getEmail(), e);
@@ -260,11 +260,11 @@ public class StudentServiceImpl implements StudentService {
     private StudentImportDTO assignUserToNewStudent(StudentImportDTO student, Optional<User> userOptional, Student newStudent, Group group) {
         log.debug("Enter to method if email EXIST and student DONT EXIST");
         if (userOptional.isPresent() && userOptional.get().getRole() == Role.ROLE_STUDENT) {
-            if(isEmailInUse(student.getEmail())){
+            if (isEmailInUse(student.getEmail())) {
                 log.error("Student with current email exist ",
                         new FieldAlreadyExistsException(Student.class, "email", student.getEmail()));
-               student.setImportSaveStatus(ImportSaveStatus.ALREADY_EXIST);
-               return student;
+                student.setImportSaveStatus(ImportSaveStatus.ALREADY_EXIST);
+                return student;
             }
             newStudent.setUser(userOptional.get());
             return saveStudentAndSetEmailGroupStatus(student, group, newStudent);

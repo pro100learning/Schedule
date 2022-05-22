@@ -93,18 +93,18 @@ public class TemporaryScheduleController {
                                                              @RequestParam Optional<String> to) {
         log.info("Enter into getAll of TemporaryScheduleController");
         List<TemporarySchedule> temporaryScheduleList;
-        if(from.isPresent() && to.isPresent()){
+        if (from.isPresent() && to.isPresent()) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             DateTimeFormatter currentFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate fromDate = LocalDate.parse(LocalDate.parse(from.get(), formatter).toString(), currentFormatter);
             LocalDate toDate = LocalDate.parse(LocalDate.parse(to.get(), formatter).toString(), currentFormatter);
-            if(teacherId.isPresent()){
+            if (teacherId.isPresent()) {
                 teacherService.getById(teacherId.get());
                 temporaryScheduleList = temporaryScheduleService.getAllByTeacherAndRange(fromDate, toDate, teacherId.get());
-            }else{
+            } else {
                 temporaryScheduleList = temporaryScheduleService.getAllByRange(fromDate, toDate);
             }
-        }else{
+        } else {
             temporaryScheduleList = temporaryScheduleService.getAllByCurrentSemester();
         }
         return ResponseEntity.ok().body(temporaryScheduleMapper.convertToDtoList(temporaryScheduleList));
@@ -162,7 +162,6 @@ public class TemporaryScheduleController {
             }
     return temporaryScheduleDTOS;
     }*/
-
 
 
 }

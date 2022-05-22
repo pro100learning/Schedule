@@ -79,7 +79,7 @@ check.dependsOn jacocoTestCoverageVerification
 checkstyle {
     toolVersion = 9.0
     maxErrors = 10000
-    config = rootProject.resources.text.fromFile('config/checkstyle/checkstyle.xml');
+    config = rootProject.resources.text.fromFile('config/checkstyle/sun_checks.xml');
 }
 
 apply from: "$projectDir/preCommit.gradle"

@@ -23,10 +23,10 @@ import java.util.List;
 @Entity
 @Table(name = "groups")
 @Builder(toBuilder = true)
-@FilterDef(name="groupDisableFilter", parameters={
-        @ParamDef( name="disable", type="boolean" ),
+@FilterDef(name = "groupDisableFilter", parameters = {
+        @ParamDef(name = "disable", type = "boolean"),
 })
-@Filter(name="groupDisableFilter", condition="disable = :disable")
+@Filter(name = "groupDisableFilter", condition = "disable = :disable")
 public class Group implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +46,7 @@ public class Group implements Serializable {
     private List<Student> students = new ArrayList<>();
 
     @Builder.Default
-    @Column(name = "disable",  columnDefinition = "boolean default 'false'")
+    @Column(name = "disable", columnDefinition = "boolean default 'false'")
     private boolean disable = false;
 
     @Column(name = "sorting_order")

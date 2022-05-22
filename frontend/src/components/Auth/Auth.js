@@ -163,10 +163,7 @@ const Auth = (props) => {
             document.title = t(LOGIN_TITLE);
             return (
                 <div className="auth-container">
-                    <a
-                        className="hidden-link"
-                        href={`${process.env.REACT_APP_API_BASE_URL.trim()}${`/${GOOGLE_LOGIN_URL}`}`}
-                    >
+                    <a href='http://localhost:8080/auth/google'>
                         auth via google
                     </a>
                     <LoginForm
