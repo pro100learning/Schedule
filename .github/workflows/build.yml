@@ -51,5 +51,5 @@ jobs:
         with:
           fail_on_error: false
           checkstyle_version: 9.0
-          checkstyle_config: config/checkstyle/sun_checks.xml
+          checkstyle_config: 'config/checkstyle/sun_checks.xml'
           github_token: ${{ secrets.GITHUB_TOKEN }}
