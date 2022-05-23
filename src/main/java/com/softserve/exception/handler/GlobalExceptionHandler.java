@@ -46,7 +46,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
-    /** Handles IncorrectTimeException, IncorrectPasswordException, ScheduleConflictException,
+    /**
+     * Handles IncorrectTimeException, IncorrectPasswordException, ScheduleConflictException,
      * PeriodConflictException, EntityAlreadyExistsException, IncorrectEmailException, UsedEntityException.
      * Triggered when:
      * time in period / password, entered during registration by User, are incorrect;

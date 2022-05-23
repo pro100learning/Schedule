@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface RoomTypeMapper {
     RoomTypeDTO roomTypeToRoomTypeDTO(RoomType roomType);
+
     RoomType RoomTypeDTOTRoomType(RoomTypeDTO roomTypeDTO);
 
     List<RoomTypeDTO> roomTypesToRoomTypeDTOs(List<RoomType> roomTypes);

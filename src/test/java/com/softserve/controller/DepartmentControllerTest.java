@@ -2,11 +2,7 @@ package com.softserve.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.assertions.CustomMockMvcAssertions;
-import com.softserve.config.DBConfigTest;
-import com.softserve.config.MyWebAppInitializer;
-import com.softserve.config.SecurityConfig;
-import com.softserve.config.SecurityWebApplicationInitializer;
-import com.softserve.config.WebMvcConfig;
+import com.softserve.config.*;
 import com.softserve.dto.DepartmentDTO;
 import com.softserve.dto.TeacherDTO;
 import com.softserve.exception.apierror.ApiValidationError;
@@ -31,15 +27,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
 import java.util.Collections;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Category(IntegrationTestCategory.class)
 @RunWith(JUnitParamsRunner.class)

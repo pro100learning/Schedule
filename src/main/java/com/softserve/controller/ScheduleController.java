@@ -29,6 +29,7 @@ import java.util.Map;
 public class ScheduleController {
 
     private final ScheduleService scheduleService;
+
     private final SemesterService semesterService;
     private final SemesterMapper semesterMapper;
     private final ScheduleMapper scheduleMapper;
@@ -148,7 +149,7 @@ public class ScheduleController {
         Schedule schedule = scheduleSaveMapper.scheduleSaveDTOToSchedule(scheduleSaveDTO);
         schedule.setLesson(lessonService.getById(scheduleSaveDTO.getLessonId()));
         List<Schedule> schedules = new ArrayList<>();
-        if (schedule.getLesson().isGrouped()){
+        if (schedule.getLesson().isGrouped()) {
             schedules = scheduleService.schedulesForGroupedLessons(schedule);
             schedules.forEach(scheduleService::checkReferences);
             schedules.forEach(scheduleService::save);
@@ -164,7 +165,7 @@ public class ScheduleController {
     public ResponseEntity delete(@PathVariable("id") long id) {
         log.info("In delete(id =[{}]", id);
         Schedule schedule = scheduleService.getById(id);
-        if (schedule.getLesson().isGrouped()){
+        if (schedule.getLesson().isGrouped()) {
             List<Schedule> schedules = scheduleService.getSchedulesForGroupedLessons(schedule);
             schedules.forEach(scheduleService::delete);
         } else {

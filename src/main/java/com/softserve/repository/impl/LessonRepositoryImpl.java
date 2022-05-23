@@ -18,7 +18,7 @@ public class LessonRepositoryImpl extends BasicRepositoryImpl<Lesson, Long> impl
 
     private static final String SELECT_GROUPED
             = "select l from Lesson l "
-            +"where l.grouped = true "
+            + "where l.grouped = true "
             + "and l.subject.id = :subjectId "
             + "and l.hours = :hours "
             + "and l.teacher.id = :teacherId "
@@ -137,7 +137,7 @@ public class LessonRepositoryImpl extends BasicRepositoryImpl<Lesson, Long> impl
                 cb.equal(from.get("semester").get("id"), semesterId));
         cq.orderBy(cb.asc(from.get("subjectForSite")));
         TypedQuery<Lesson> tq = sessionFactory.getCurrentSession().createQuery(cq);
-        return  tq.getResultList();
+        return tq.getResultList();
     }
 
 
@@ -162,9 +162,8 @@ public class LessonRepositoryImpl extends BasicRepositoryImpl<Lesson, Long> impl
                 cb.equal(from.get("semester").get("id"), semesterId));
         cq.orderBy(cb.asc(from.get("subjectForSite")));
         TypedQuery<Lesson> tq = sessionFactory.getCurrentSession().createQuery(cq);
-        return  tq.getResultList();
+        return tq.getResultList();
     }
-
 
 
     /**
@@ -186,7 +185,7 @@ public class LessonRepositoryImpl extends BasicRepositoryImpl<Lesson, Long> impl
                 cb.equal(from.get("subject").get("id"), lesson.getSubject().getId()),
                 cb.equal(from.get("group").get("id"), lesson.getGroup().getId()),
                 cb.equal(from.get("semester").get("id"), lesson.getSemester().getId()),
-                cb.equal(from.get("lessonType"),lesson.getLessonType()));
+                cb.equal(from.get("lessonType"), lesson.getLessonType()));
 
         cq.select(cb.count(from));
         Query<Long> query = sessionFactory.getCurrentSession().createQuery(cq);
@@ -291,7 +290,7 @@ public class LessonRepositoryImpl extends BasicRepositoryImpl<Lesson, Long> impl
     protected boolean checkReference(Lesson lesson) {
         log.info("In checkReference(lesson = [{}])", lesson);
         Long count = sessionFactory.getCurrentSession().createQuery
-                (COUNT_QUERY, Long.class)
+                        (COUNT_QUERY, Long.class)
                 .setParameter("lessonId", lesson.getId())
                 .getSingleResult();
         return count != 0;
@@ -301,6 +300,7 @@ public class LessonRepositoryImpl extends BasicRepositoryImpl<Lesson, Long> impl
      * The method used for updating links to meeting for lessons.
      * By default, link to meeting is updated by semester id and teacher id
      * But update can be more specific by providing additional subject id and/or lesson type in a lesson object
+     *
      * @param lesson Lesson object with new link to meeting
      * @return Integer the number of links that was updated
      */
@@ -333,11 +333,12 @@ public class LessonRepositoryImpl extends BasicRepositoryImpl<Lesson, Long> impl
 
     /**
      * Method is used to update grouped lessons
+     *
      * @param updatedLesson grouped lesson that needs to be updated
      * @return updated Lesson
      */
     @Override
-    public Lesson updateGrouped(Lesson oldLesson,Lesson updatedLesson, boolean isTeacherOrSubjectUpdated) {
+    public Lesson updateGrouped(Lesson oldLesson, Lesson updatedLesson, boolean isTeacherOrSubjectUpdated) {
         log.info("Entered updateGroup({}, {})", oldLesson, updatedLesson);
         Session currentSession = sessionFactory.getCurrentSession();
         Query query = isTeacherOrSubjectUpdated
@@ -385,7 +386,7 @@ public class LessonRepositoryImpl extends BasicRepositoryImpl<Lesson, Long> impl
     }
 
     @Override
-    public int setGrouped(Long lessonId){
+    public int setGrouped(Long lessonId) {
         log.info("Entered setGrouped({})", lessonId);
         return sessionFactory.getCurrentSession()
                 .createQuery(SET_GROUPED)

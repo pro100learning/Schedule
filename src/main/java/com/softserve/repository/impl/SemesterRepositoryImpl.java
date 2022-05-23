@@ -23,7 +23,7 @@ public class SemesterRepositoryImpl extends BasicRepositoryImpl<Semester, Long> 
     private static final String HQL_SELECT_PERIODS_WITH_LESSONS
             = "select s.period from Schedule s where s.lesson.semester.id = :semesterId";
 
-    private Session getSession(){
+    private Session getSession() {
         Session session = sessionFactory.getCurrentSession();
         Filter filter = session.enableFilter("semesterDisableFilter");
         filter.setParameter("disable", false);
@@ -38,11 +38,11 @@ public class SemesterRepositoryImpl extends BasicRepositoryImpl<Semester, Long> 
     @Override
     public List<Semester> getAll() {
         log.info("In getAll()");
-        return  getSession().createQuery("SELECT distinct s " +
-                "from Semester s " +
-                "left join fetch s.periods " +
-                "left join fetch s.groups " +
-                "left join fetch s.daysOfWeek", Semester.class)
+        return getSession().createQuery("SELECT distinct s " +
+                        "from Semester s " +
+                        "left join fetch s.periods " +
+                        "left join fetch s.groups " +
+                        "left join fetch s.daysOfWeek", Semester.class)
                 .getResultList();
     }
 
@@ -75,8 +75,9 @@ public class SemesterRepositoryImpl extends BasicRepositoryImpl<Semester, Long> 
 
     /**
      * Method gets count of semesters with provided description and year
+     *
      * @param description searched description
-     * @param year searched year
+     * @param year        searched year
      * @return count of semesters
      */
     @Override
@@ -130,7 +131,7 @@ public class SemesterRepositoryImpl extends BasicRepositoryImpl<Semester, Long> 
     @Override
     public int updateAllSemesterCurrentToFalse() {
         log.info("In setCurrentSemesterToFalse()");
-        return  sessionFactory.getCurrentSession().createQuery(
+        return sessionFactory.getCurrentSession().createQuery(
                         "UPDATE Semester s set s.currentSemester = false  where currentSemester = true")
                 .executeUpdate();
     }
@@ -143,7 +144,7 @@ public class SemesterRepositoryImpl extends BasicRepositoryImpl<Semester, Long> 
     @Override
     public int updateAllSemesterDefaultToFalse() {
         log.info("In setDefaultSemesterToFalse()");
-        return  sessionFactory.getCurrentSession().createQuery(
+        return sessionFactory.getCurrentSession().createQuery(
                         "UPDATE Semester s set s.defaultSemester = false  where defaultSemester = true")
                 .executeUpdate();
     }
@@ -180,8 +181,9 @@ public class SemesterRepositoryImpl extends BasicRepositoryImpl<Semester, Long> 
 
     /**
      * Method gets Semester object with provided description and year
+     *
      * @param description searched description
-     * @param year searched year
+     * @param year        searched year
      * @return Semester if such exists, else null
      */
     @Override
@@ -195,6 +197,7 @@ public class SemesterRepositoryImpl extends BasicRepositoryImpl<Semester, Long> 
 
     /**
      * The method used for getting unique days with lessons in the semester
+     *
      * @param semesterId id of the semester
      * @return a list of days
      */
@@ -208,6 +211,7 @@ public class SemesterRepositoryImpl extends BasicRepositoryImpl<Semester, Long> 
 
     /**
      * The method used for getting periods with lessons in the semester
+     *
      * @param semesterId id of the semester
      * @return a list of periods
      */

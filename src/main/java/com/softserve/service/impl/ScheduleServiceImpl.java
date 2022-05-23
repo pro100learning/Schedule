@@ -425,10 +425,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     private TemporaryScheduleDTOForDashboard compareScheduleWithTemporarySchedule(List<TemporarySchedule> temporarySchedules, Long groupId, Long periodId, Long teacherId) {
         TemporaryScheduleDTOForDashboard temporaryScheduleDTO = new TemporaryScheduleDTOForDashboard();
         TemporarySchedule temporarySchedule = temporarySchedules.stream().filter(temporarySchedule1 ->
-                !temporarySchedule1.isVacation() && temporarySchedule1.getScheduleId() != null
-                        && temporarySchedule1.getPeriod().getId() == periodId
-                        && temporarySchedule1.getGroup().getId().equals(groupId)
-        )
+                        !temporarySchedule1.isVacation() && temporarySchedule1.getScheduleId() != null
+                                && temporarySchedule1.getPeriod().getId() == periodId
+                                && temporarySchedule1.getGroup().getId().equals(groupId)
+                )
                 .findFirst().orElse(temporarySchedules.stream().filter(temporarySchedule1 ->
                         temporarySchedule1.getScheduleId() != null &&
                                 temporarySchedule1.getPeriod().getId() == periodId
@@ -867,12 +867,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     /**
      * The method is used for getting list of schedules grouped by rooms
+     *
      * @param semesterId Id of Semester
      * @return grouped List of schedule's list
      */
     @Override
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public Map<Room, List<Schedule>>  getAllOrdered(Long semesterId){
+    public Map<Room, List<Schedule>> getAllOrdered(Long semesterId) {
         log.info("Entered getAllOrdered({})", semesterId);
         return scheduleRepository
                 .getAllOrdered(semesterId)

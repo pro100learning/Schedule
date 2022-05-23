@@ -57,6 +57,6 @@ public class Lesson implements Serializable {
     @NotNull
     private Semester semester;
 
-    @Column(name = "grouped",  columnDefinition = "boolean default 'false'")
+    @Column(name = "grouped", columnDefinition = "boolean default 'false'")
     private boolean grouped = false;
 }
