@@ -47,10 +47,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           paths: build/reports/jacoco/test/jacocoTestReport.xml
       - name: Run check style
-        uses: nikitasavinov/checkstyle-action@master
+        uses: dbelyaev/action-checkstyle@v0.6.1
         with:
-          reporter: 'github-pr-check'
           tool_name: 'reviewdog'
+          level: error
           fail_on_error: false
           checkstyle_version: 9.0
           checkstyle_config: config/checkstyle/sun_checks.xml
