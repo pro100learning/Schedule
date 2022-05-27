@@ -38,7 +38,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     /**
-     * Method gets information from Repository for particular lesson with id parameter
+     * Method g ets information from Repository for particular lesson with id parameter
      *
      * @param id Identity number of the lesson
      * @return Lesson entity

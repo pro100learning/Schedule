@@ -26,7 +26,7 @@ public class ArchiveServiceImpl implements ArchiveService {
     }
 
     /**
-     * The method used for getting schedule from mongo database by semesterId
+     * The method  used for getting schedule from mongo database by semesterId
      *
      * @param semesterId Semester id for getting schedule by this id from mongo db
      * @return ScheduleFullForArchiveDTO
