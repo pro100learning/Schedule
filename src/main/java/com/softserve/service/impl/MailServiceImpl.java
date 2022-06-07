@@ -65,7 +65,7 @@ public class MailServiceImpl implements MailService {
     }
 
     /**
-     * Method for sending message from server to user
+     * Method for sending message  from server to user
      *
      * @param emailTo to whom the message will be sent
      * @param subject the subject of the message

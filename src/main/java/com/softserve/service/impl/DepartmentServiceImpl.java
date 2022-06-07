@@ -21,7 +21,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final DepartmentRepository repository;
 
     /**
-     * The method returns information from Repository for particular department with id parameter
+     * The  method returns information from Repository for particular department with id parameter
      *
      * @param id Identity number of the department
      * @return Department entity

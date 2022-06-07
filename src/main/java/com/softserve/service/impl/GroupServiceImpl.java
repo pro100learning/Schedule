@@ -29,7 +29,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     /**
-     * Method gets by id group from Repository
+     * Method  gets by id group from Repository
      *
      * @param id Identity number of the group
      * @return Group entity

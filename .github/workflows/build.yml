@@ -46,12 +46,8 @@ jobs:
           min-coverage-changed-files: 70
           token: ${{ secrets.GITHUB_TOKEN }}
           paths: build/reports/jacoco/test/jacocoTestReport.xml
-      - name: Run check style1
-        uses: nikitasavinov/checkstyle-action@master
+      - name: Checkstyle
+        uses: jwgmeligmeyling/checkstyle-github-action@master
         with:
-          reporter: 'github-pr-check'
-          tool_name: 'reviewdog'
-          fail_on_error: false
-          checkstyle_version: 9.0
-          checkstyle_config: config/checkstyle/sun_checks.xml
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          title: Checkstyle
+          path: '**/build/reports/checkstyle/*.xml'
